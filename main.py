@@ -2,6 +2,7 @@ from settings import *
 from pytmx.util_pygame import load_pygame
 from os.path import join
 from sprites import Sprite
+from entities import Player
 
 class Game:
     def __init__(self):
@@ -21,6 +22,11 @@ class Game:
     def setup(self, tmx_map, player_start_pos):
         for x, y, surf in tmx_map.get_layer_by_name('Terrain').tiles():
             Sprite((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites)
+
+        for obj in tmx_map.get_layer_by_name('Entities'):
+            if obj.name == 'Player' and obj.properties['pos'] == player_start_pos:
+                Player((obj.x, obj.y), self.all_sprites)
+
 
     def run(self):
         while True:
